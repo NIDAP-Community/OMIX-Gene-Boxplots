@@ -1,252 +1,252 @@
 {
-  "version": 1,
-  "named_parameters": true,
-  "general": {
-    "title": "OMIX Gene Boxplots",
-    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor a DEG workflow result, connect or attach the result folder and separately attach matching sample metadata. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
-  },
-  "datasets": [
-    {
-      "id": "0d798da9-5060-480a-a8d6-b9f143af6638",
-      "name": "Example DEG results",
-      "description": "Example differential-expression results with sample-level expression values for gene boxplots.",
-      "help_text": "Example DEG results for the Gene Boxplots demo.\n\nIt should contain one supported table with `DEG` in its filename, a gene-ID column (commonly `GeneName` or `Gene`), sample-expression columns, and contrast statistics such as `B-A_pval` or `B-A_adjpval`.\n\nAttach matching sample metadata separately in one supported table with `metadata` in its filename, containing `Sample` and `Group`."
-    }
-  ],
-  "categories": [
-    {
-      "id": "input",
-      "name": "📁 Input data",
-      "help_text": "Supply an expression/DEG result and matching sample metadata. File uploads override files discovered from connected data assets or workflow results."
-    },
-    {
-      "id": "statistics",
-      "name": "📊 Statistics",
-      "help_text": "Choose whether annotations use the original DEG model, a new exploratory test, or no statistics."
-    },
-    {
-      "id": "appearance",
-      "name": "🎨 Appearance",
-      "help_text": "Control plot type, labels, colors, and image resolution."
-    }
-  ],
-  "parameters": [
-    {
-      "id": "expression_file",
-      "category": "input",
-      "name": "Expression Table (Optional)",
-      "param_name": "expression_file",
-      "help_text": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
-      "type": "file",
-      "value_type": "string"
-    },
-    {
-      "id": "metadata_file",
-      "category": "input",
-      "name": "Sample Metadata (Optional)",
-      "param_name": "metadata_file",
-      "help_text": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
-      "type": "file",
-      "value_type": "string"
-    },
-    {
-      "id": "deg_file",
-      "category": "input",
-      "name": "DEG Results (Optional)",
-      "param_name": "deg_file",
-      "help_text": "Optional separate DEG table with columns such as B-A_pval or B-A_adjpval. Leave blank when the expression table is `DEG_Analysis.csv`.",
-      "type": "file",
-      "value_type": "string"
-    },
-    {
-      "id": "genes",
-      "category": "input",
-      "name": "Genes to Plot",
-      "param_name": "genes",
-      "help_text": "Required comma-separated identifiers exactly as they appear in the Gene ID Column (for example: Nfil3,Tox,Zbtb16).",
-      "type": "text",
-      "value_type": "string"
-    },
-    {
-      "id": "gene_column",
-      "category": "input",
-      "name": "Gene ID Column",
-      "param_name": "gene_column",
-      "help_text": "Identifier column in the expression table.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "GeneName"
-    },
-    {
-      "id": "deg_gene_column",
-      "category": "input",
-      "name": "DEG Gene ID Column",
-      "param_name": "deg_gene_column",
-      "help_text": "Identifier column in a separate DEG result table. Keep GeneName when using an OMIX DEG result.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "GeneName"
-    },
-    {
-      "id": "sample_column",
-      "category": "input",
-      "name": "Sample ID Column",
-      "param_name": "sample_column",
-      "help_text": "Metadata column whose values exactly match the expression sample-column names.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "Sample"
-    },
-    {
-      "id": "category_column",
-      "category": "input",
-      "name": "Group Column",
-      "param_name": "category_column",
-      "help_text": "Metadata column used for the x-axis groups.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "Group"
-    },
-    {
-      "id": "categories",
-      "category": "input",
-      "name": "Groups to Include (Optional)",
-      "param_name": "categories",
-      "help_text": "Optional comma-separated values from Group Column. Leave blank to include every group.",
-      "type": "text",
-      "value_type": "string"
-    },
-    {
-      "id": "statistics_mode",
-      "category": "statistics",
-      "name": "Statistics Source",
-      "param_name": "statistics_mode",
-      "help_text": "Precomputed DEG statistics preserves the original DEG model and is recommended. Within-plot tests run a new simple test on only the displayed values.",
-      "type": "list",
-      "value_type": "string",
-      "default_value": "precomputed_deg",
-      "extra_data": [
-        "precomputed_deg",
-        "within_plot",
-        "none"
-      ]
-    },
-    {
-      "id": "pvalue_type",
-      "category": "statistics",
-      "name": "P-value Type",
-      "param_name": "pvalue_type",
-      "help_text": "Select nominal for *_pval or adjusted for *_adjpval when plotting precomputed DEG statistics.",
-      "type": "list",
-      "value_type": "string",
-      "default_value": "nominal",
-      "extra_data": [
-        "nominal",
-        "adjusted"
-      ]
-    },
-    {
-      "id": "statistical_method",
-      "category": "statistics",
-      "name": "Within-plot Test",
-      "param_name": "statistical_method",
-      "help_text": "Used only when Statistics Source is within_plot.",
-      "type": "list",
-      "value_type": "string",
-      "default_value": "anova",
-      "extra_data": [
-        "anova",
-        "t-test",
-        "kruskal"
-      ]
-    },
-    {
-      "id": "p_adjust_method",
-      "category": "statistics",
-      "name": "Within-plot P-value Adjustment",
-      "param_name": "p_adjust_method",
-      "help_text": "Method used to adjust multiple exploratory within-plot comparisons.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "BH"
-    },
-    {
-      "id": "minimum_samples_per_category",
-      "category": "statistics",
-      "name": "Minimum Samples per Group",
-      "param_name": "minimum_samples_per_category",
-      "help_text": "Groups with fewer samples are excluded. At least two groups must remain.",
-      "type": "text",
-      "value_type": "number",
-      "default_value": "2"
-    },
-    {
-      "id": "plot_type",
-      "category": "appearance",
-      "name": "Plot Type",
-      "param_name": "plot_type",
-      "type": "list",
-      "value_type": "string",
-      "default_value": "box",
-      "extra_data": [
-        "box",
-        "violin"
-      ]
-    },
-    {
-      "id": "plot_title_prefix",
-      "category": "appearance",
-      "name": "Plot Title Prefix",
-      "param_name": "plot_title_prefix",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "Expression: "
-    },
-    {
-      "id": "y_axis_label",
-      "category": "appearance",
-      "name": "Y-axis Label",
-      "param_name": "y_axis_label",
-      "help_text": "Describe the scale supplied in the expression table, such as Batch-corrected expression or log2 CPM.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "Expression"
-    },
-    {
-      "id": "colors",
-      "category": "appearance",
-      "name": "Group Colors (Optional)",
-      "param_name": "colors",
-      "help_text": "Optional comma-separated color names or HEX values, assigned in group order.",
-      "type": "text",
-      "value_type": "string"
-    },
-    {
-      "id": "image_width",
-      "category": "appearance",
-      "name": "Image Width (inches)",
-      "param_name": "image_width",
-      "type": "text",
-      "value_type": "number",
-      "default_value": "6"
-    },
-    {
-      "id": "image_height",
-      "category": "appearance",
-      "name": "Image Height (inches)",
-      "param_name": "image_height",
-      "type": "text",
-      "value_type": "number",
-      "default_value": "5"
-    },
-    {
-      "id": "image_dpi",
-      "category": "appearance",
-      "name": "Image Resolution (DPI)",
-      "param_name": "image_dpi",
-      "type": "text",
-      "value_type": "number",
-      "default_value": "300"
-    }
-  ]
+	"version": 1,
+	"named_parameters": true,
+	"general": {
+		"title": "OMIX Gene Boxplots",
+		"instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor a DEG workflow result, connect or attach the result folder and separately attach matching sample metadata. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
+	},
+	"datasets": [
+		{
+			"id": "88462af0-654d-4850-8efd-9e307485eeed",
+			"name": "OMIX DEG output (training data)",
+			"description": "Example differential-expression results with sample metadata output.",
+			"help_text": "This output from DEG Analysis has both DEG and sample metadata tables."
+		}
+	],
+	"categories": [
+		{
+			"id": "input",
+			"name": "📁 Input data",
+			"help_text": "Supply an expression/DEG result and matching sample metadata. File uploads override files discovered from connected data assets or workflow results."
+		},
+		{
+			"id": "statistics",
+			"name": "📊 Statistics",
+			"help_text": "Choose whether annotations use the original DEG model, a new exploratory test, or no statistics."
+		},
+		{
+			"id": "appearance",
+			"name": "🎨 Appearance",
+			"help_text": "Control plot type, labels, colors, and image resolution."
+		}
+	],
+	"parameters": [
+		{
+			"id": "expression_file",
+			"category": "input",
+			"name": "Expression Table (Optional)",
+			"param_name": "expression_file",
+			"help_text": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
+			"type": "file",
+			"value_type": "string"
+		},
+		{
+			"id": "metadata_file",
+			"category": "input",
+			"name": "Sample Metadata (Optional)",
+			"param_name": "metadata_file",
+			"help_text": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
+			"type": "file",
+			"value_type": "string"
+		},
+		{
+			"id": "deg_file",
+			"category": "input",
+			"name": "DEG Results (Optional)",
+			"param_name": "deg_file",
+			"help_text": "Optional separate DEG table with columns such as B-A_pval or B-A_adjpval. Leave blank when the expression table is `DEG_Analysis.csv`.",
+			"type": "file",
+			"value_type": "string"
+		},
+		{
+			"id": "genes",
+			"category": "input",
+			"name": "Genes to Plot",
+			"param_name": "genes",
+			"help_text": "Required comma-separated identifiers exactly as they appear in the Gene ID Column (for example: Nfil3,Tox,Zbtb16).",
+			"type": "text",
+			"value_type": "string"
+		},
+		{
+			"id": "gene_column",
+			"category": "input",
+			"name": "Gene ID Column",
+			"param_name": "gene_column",
+			"help_text": "Identifier column in the expression table.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "GeneName"
+		},
+		{
+			"id": "deg_gene_column",
+			"category": "input",
+			"name": "DEG Gene ID Column",
+			"param_name": "deg_gene_column",
+			"help_text": "Identifier column in a separate DEG result table. Keep GeneName when using an OMIX DEG result.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "GeneName"
+		},
+		{
+			"id": "sample_column",
+			"category": "input",
+			"name": "Sample ID Column",
+			"param_name": "sample_column",
+			"help_text": "Metadata column whose values exactly match the expression sample-column names.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "Sample"
+		},
+		{
+			"id": "category_column",
+			"category": "input",
+			"name": "Group Column",
+			"param_name": "category_column",
+			"help_text": "Metadata column used for the x-axis groups.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "Group"
+		},
+		{
+			"id": "categories",
+			"category": "input",
+			"name": "Groups to Include (Optional)",
+			"param_name": "categories",
+			"help_text": "Optional comma-separated values from Group Column. Leave blank to include every group.",
+			"type": "text",
+			"value_type": "string"
+		},
+		{
+			"id": "statistics_mode",
+			"category": "statistics",
+			"name": "Statistics Source",
+			"param_name": "statistics_mode",
+			"help_text": "Precomputed DEG statistics preserves the original DEG model and is recommended. Within-plot tests run a new simple test on only the displayed values.",
+			"type": "list",
+			"value_type": "string",
+			"default_value": "precomputed_deg",
+			"extra_data": [
+				"precomputed_deg",
+				"within_plot",
+				"none"
+			]
+		},
+		{
+			"id": "pvalue_type",
+			"category": "statistics",
+			"name": "P-value Type",
+			"param_name": "pvalue_type",
+			"help_text": "Select nominal for *_pval or adjusted for *_adjpval when plotting precomputed DEG statistics.",
+			"type": "list",
+			"value_type": "string",
+			"default_value": "nominal",
+			"extra_data": [
+				"nominal",
+				"adjusted"
+			]
+		},
+		{
+			"id": "statistical_method",
+			"category": "statistics",
+			"name": "Within-plot Test",
+			"param_name": "statistical_method",
+			"help_text": "Used only when Statistics Source is within_plot.",
+			"type": "list",
+			"value_type": "string",
+			"default_value": "anova",
+			"extra_data": [
+				"anova",
+				"t-test",
+				"kruskal"
+			]
+		},
+		{
+			"id": "p_adjust_method",
+			"category": "statistics",
+			"name": "Within-plot P-value Adjustment",
+			"param_name": "p_adjust_method",
+			"help_text": "Method used to adjust multiple exploratory within-plot comparisons.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "BH"
+		},
+		{
+			"id": "minimum_samples_per_category",
+			"category": "statistics",
+			"name": "Minimum Samples per Group",
+			"param_name": "minimum_samples_per_category",
+			"help_text": "Groups with fewer samples are excluded. At least two groups must remain.",
+			"type": "text",
+			"value_type": "number",
+			"default_value": "2"
+		},
+		{
+			"id": "plot_type",
+			"category": "appearance",
+			"name": "Plot Type",
+			"param_name": "plot_type",
+			"type": "list",
+			"value_type": "string",
+			"default_value": "box",
+			"extra_data": [
+				"box",
+				"violin"
+			]
+		},
+		{
+			"id": "plot_title_prefix",
+			"category": "appearance",
+			"name": "Plot Title Prefix",
+			"param_name": "plot_title_prefix",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "Expression: "
+		},
+		{
+			"id": "y_axis_label",
+			"category": "appearance",
+			"name": "Y-axis Label",
+			"param_name": "y_axis_label",
+			"help_text": "Describe the scale supplied in the expression table, such as Batch-corrected expression or log2 CPM.",
+			"type": "text",
+			"value_type": "string",
+			"default_value": "Expression"
+		},
+		{
+			"id": "colors",
+			"category": "appearance",
+			"name": "Group Colors (Optional)",
+			"param_name": "colors",
+			"help_text": "Optional comma-separated color names or HEX values, assigned in group order.",
+			"type": "text",
+			"value_type": "string"
+		},
+		{
+			"id": "image_width",
+			"category": "appearance",
+			"name": "Image Width (inches)",
+			"param_name": "image_width",
+			"type": "text",
+			"value_type": "number",
+			"default_value": "6"
+		},
+		{
+			"id": "image_height",
+			"category": "appearance",
+			"name": "Image Height (inches)",
+			"param_name": "image_height",
+			"type": "text",
+			"value_type": "number",
+			"default_value": "5"
+		},
+		{
+			"id": "image_dpi",
+			"category": "appearance",
+			"name": "Image Resolution (DPI)",
+			"param_name": "image_dpi",
+			"type": "text",
+			"value_type": "number",
+			"default_value": "300"
+		}
+	]
 }

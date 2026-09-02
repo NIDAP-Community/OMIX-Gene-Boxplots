@@ -2,8 +2,8 @@
 	"version": 1,
 	"attached_datasets": [
 		{
-			"id": "0d798da9-5060-480a-a8d6-b9f143af6638",
-			"mount": "gene-boxplots-demo"
+			"id": "88462af0-654d-4850-8efd-9e307485eeed",
+			"mount": "deg-training"
 		}
 	]
 }

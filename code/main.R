@@ -110,7 +110,7 @@ if (is.null(expression_path)) {
   } else {
     find_unique_data_file(
       label = "DEG/expression table",
-      pattern = "DEG"
+      pattern = "DEG_Analysis.csv"
     )
   }
 }
