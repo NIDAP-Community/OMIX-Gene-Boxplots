@@ -3,7 +3,7 @@
   "named_parameters": true,
   "general": {
     "title": "OMIX Gene Boxplots",
-    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor an OMIX DEG workflow result, connect or attach one result folder containing both `DEG_Analysis.csv` and `Sample_Metadata.csv`. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
+    "instructions": "Create sample-level gene-expression plots for selected genes using the preserved CCBR boxplot implementation.\n\nFor an OMIX DEG workflow result, connect or attach one result folder containing both `DEG_Analysis.csv` and `Sample_Metadata.csv`. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values. The advanced original R functions remain available for local use."
   },
   "datasets": [
     {
@@ -175,10 +175,10 @@
       "category": "statistics",
       "name": "Minimum Samples per Group",
       "param_name": "minimum_samples_per_category",
-      "help_text": "Groups with fewer samples are excluded. At least two groups must remain.",
+      "help_text": "Groups with fewer samples are excluded. The original default is three samples per group; at least two groups must remain.",
       "type": "text",
       "value_type": "number",
-      "default_value": "2"
+      "default_value": "3"
     },
     {
       "id": "plot_type",
@@ -194,30 +194,31 @@
       ]
     },
     {
-      "id": "plot_title_prefix",
+      "id": "title",
       "category": "appearance",
-      "name": "Plot Title Prefix",
-      "param_name": "plot_title_prefix",
+      "name": "Plot Title",
+      "param_name": "title",
+      "help_text": "Leave auto to use the original per-gene title. A custom value is used for every selected gene.",
       "type": "text",
       "value_type": "string",
-      "default_value": "Expression: "
+      "default_value": "auto"
     },
     {
       "id": "y_axis_label",
       "category": "appearance",
       "name": "Y-axis Label",
       "param_name": "y_axis_label",
-      "help_text": "Describe the scale supplied in the expression table, such as Batch-corrected expression or log2 CPM.",
+      "help_text": "Leave auto to preserve the original template behavior, or describe the supplied scale, such as batch-corrected expression or log2 CPM.",
       "type": "text",
       "value_type": "string",
-      "default_value": "Expression"
+      "default_value": "auto"
     },
     {
       "id": "colors",
       "category": "appearance",
       "name": "Group Colors (Optional)",
       "param_name": "colors",
-      "help_text": "Optional comma-separated color names or HEX values, assigned in group order.",
+      "help_text": "Leave blank to use the original default group colors in order: Deep Red, Vivid Blue, Green, Purple, and so on. Optionally supply comma-separated original color names in group order.",
       "type": "text",
       "value_type": "string"
     },
@@ -228,7 +229,7 @@
       "param_name": "image_width",
       "type": "text",
       "value_type": "number",
-      "default_value": "6"
+      "default_value": "5"
     },
     {
       "id": "image_height",
@@ -237,7 +238,7 @@
       "param_name": "image_height",
       "type": "text",
       "value_type": "number",
-      "default_value": "5"
+      "default_value": "5.5"
     },
     {
       "id": "image_dpi",

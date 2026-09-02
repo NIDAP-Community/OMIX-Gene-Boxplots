@@ -12,6 +12,20 @@ The canonical OMIX module is the source of reusable scientific behavior. This
 repository provides Code Ocean input discovery, App Panel configuration,
 environment selection, and `/results` output.
 
+## Preserved CCBR implementation
+
+`code/functions/Boxplot_with_Stats.R` is the original CCBR implementation,
+preserved as the compatibility reference. Its public
+`gene_boxplot_with_stats()` and `gene_boxplot_with_deg_results()` functions
+remain intact, including advanced options such as covariate-aware tests,
+compact letters, beeswarm points, palette controls, and layout controls.
+
+`code/functions/OMIX_Gene_Boxplots.R` is only the thin workflow wrapper. It
+maps tables and `/results` paths into those preserved functions. The only
+intentional OMIX default change is that **nominal** p-values are selected by
+default for a precomputed DEG result; choose **adjusted** to use the original
+DEG-wrapper default.
+
 ## Recommended workflow use
 
 For a result from **OMIX DEG Analysis**, attach one result or data asset
@@ -40,6 +54,8 @@ metadata files. Use an explicit upload to resolve an intentionally complex
 input set. Its default feature ID is `GeneName`, but a common `Gene` column is
 detected automatically when that default is absent.
 
+The original default requires at least three samples in each displayed group.
+
 ## Statistics modes
 
 - **`precomputed_deg` (recommended):** labels plots with p-values from the
@@ -55,6 +71,16 @@ detected automatically when that default is absent.
 Choose **nominal** to use `*_pval` columns or **adjusted** to use
 `*_adjpval` columns in precomputed mode. Nominal is the default to match the
 other OMIX pathway and visualization capsule defaults.
+
+## Plot appearance
+
+The default visual style is the established CCBR boxplot template: groups are
+assigned **Deep Red**, **Vivid Blue**, **Green**, **Purple**, and subsequent
+original custom colors in display order; boxes are lightly filled; individual
+observations are small filled circles; and a right-side legend is shown.
+Comparison bars and italic p-value labels are black. Leave **Group Colors**
+blank to retain these defaults, or provide comma-separated original color names
+in group order.
 
 ## Inputs and outputs
 
@@ -74,4 +100,6 @@ Results contain:
 This adapter is pinned to the immutable OMIX Visualization image tag
 `fe132cd082ce9aaf64f925381a92402947de611d`, rather than mutable `latest`.
 It includes R 4.4.3 and common plotting dependencies such as `ggplot2` and
-`optparse`. No capsule-specific R packages are installed during a run.
+`optparse`. The next OMIX Visualization image release also includes the legacy
+boxplot dependencies `ggbeeswarm`, `broom`, `multcomp`, `multcompView`, and
+`RColorBrewer`; use that new immutable image tag once it has been built.
