@@ -1,0 +1,13 @@
+metadata_version: 1
+name: OMIX Gene Boxplots
+description: Create sample-level gene-expression boxplots from normalized or batch-corrected expression values, optionally annotated with the original differential-expression statistics.
+tags:
+  - OMIX
+  - Gene expression
+  - visualization
+  - Differential expression
+  - Bulk RNA-seq
+  - R
+  - ggplot2
+authors:
+  - name: Maggie Cam
