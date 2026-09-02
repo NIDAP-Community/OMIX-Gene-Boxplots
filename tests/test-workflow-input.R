@@ -48,6 +48,12 @@ result <- omix_gene_boxplots(
   deg_gene_column = "Gene"
 )
 stopifnot(nrow(result$statistics) == 1L)
+gene_a_geometries <- vapply(
+  result$plots[["GeneA"]]$layers,
+  function(layer) class(layer$geom)[[1L]],
+  character(1)
+)
+stopifnot(sum(gene_a_geometries == "GeomSegment") == 1L)
 
 write.csv(expression, file.path(workflow_dir, "second_DEG.csv"), row.names = FALSE)
 error <- tryCatch({

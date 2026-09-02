@@ -45,7 +45,8 @@ detected automatically when that default is absent.
 - **`precomputed_deg` (recommended):** labels plots with p-values from the
   original limma/voom (or other compatible) DEG model. It preserves the
   contrast, technical-batch terms, donor blocking, and multiple-testing choice
-  used upstream.
+  used upstream. Each comparison is drawn as a horizontal bar above the two
+  corresponding groups.
 - **`within_plot`:** independently calculates simple pairwise tests from the
   values shown in each plot. Use only for exploratory display; it does not
   replicate an upstream model with covariates or paired structure.
