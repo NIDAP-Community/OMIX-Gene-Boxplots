@@ -26,9 +26,10 @@ Panel. Its default required columns are `Sample` and `Group`.
 
 When this capsule runs after an upstream DEG capsule in a Code Ocean Pipeline:
 
-1. Connect the DEG Results output. The adapter discovers exactly one
-   `DEG_Analysis.csv` below `/data`.
-2. Attach the matching `Sample_Metadata.csv` as a second Data Asset.
+1. Connect the DEG Results output. The adapter discovers exactly one supported
+   table with `DEG` in its filename below `/data`.
+2. Attach the matching metadata as a second Data Asset. The adapter discovers
+   exactly one supported table with `metadata` in its filename.
 3. Leave all three file-upload controls blank.
 4. Enter **Genes to Plot**, for example `Nfil3,Tox,Zbtb16`.
 5. Keep **Statistics Source** set to `precomputed_deg` unless an independent
@@ -36,7 +37,8 @@ When this capsule runs after an upstream DEG capsule in a Code Ocean Pipeline:
 
 The capsule stops rather than guessing if it sees multiple candidate DEG or
 metadata files. Use an explicit upload to resolve an intentionally complex
-input set.
+input set. Its default feature ID is `GeneName`, but a common `Gene` column is
+detected automatically when that default is absent.
 
 ## Statistics modes
 

@@ -3,7 +3,7 @@
   "named_parameters": true,
   "general": {
     "title": "OMIX Gene Boxplots",
-    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor a DEG workflow result, connect or attach the folder containing `DEG_Analysis.csv` and separately attach `Sample_Metadata.csv`. Leave file upload fields blank and the capsule discovers exactly one of each file below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
+    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor a DEG workflow result, connect or attach the result folder and separately attach matching sample metadata. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
   },
   "categories": [
     {
@@ -28,7 +28,7 @@
       "category": "input",
       "name": "Expression Table (Optional)",
       "param_name": "expression_file",
-      "help_text": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, `DEG_Analysis.csv` is discovered from the connected result or data asset.",
+      "help_text": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
       "type": "file",
       "value_type": "string"
     },
@@ -37,7 +37,7 @@
       "category": "input",
       "name": "Sample Metadata (Optional)",
       "param_name": "metadata_file",
-      "help_text": "Upload a metadata table containing Sample and Group columns. If blank, exactly one `Sample_Metadata.csv` is discovered under /data.",
+      "help_text": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
       "type": "file",
       "value_type": "string"
     },

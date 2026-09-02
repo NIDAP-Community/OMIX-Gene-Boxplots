@@ -19,6 +19,7 @@ get_script_dir <- function() {
 
 runtime_root <- normalizePath(file.path(get_script_dir(), ".."), mustWork = TRUE)
 source(file.path(runtime_root, "code", "functions", "OMIX_Gene_Boxplots.R"))
+source(file.path(runtime_root, "code", "functions", "workflow_input.R"))
 
 option_list <- list(
   make_option("--expression_file", type = "character", default = "", help = "Optional expression table upload"),
@@ -79,37 +80,6 @@ read_table_file <- function(path, label) {
   utils::read.delim(path, stringsAsFactors = FALSE, check.names = FALSE)
 }
 
-find_unique_data_file <- function(label, basenames = character(), pattern = NULL) {
-  if (!dir.exists("/data")) {
-    stop("ERROR: `/data` is unavailable; upload the required file explicitly")
-  }
-  files <- list.files(
-    "/data", recursive = TRUE, full.names = TRUE,
-    pattern = "\\.(csv|tsv|txt|rds)$", ignore.case = TRUE
-  )
-  files <- files[file.info(files)$isdir %in% FALSE]
-  if (length(basenames)) {
-    basenames_lower <- tolower(basenames)
-    files <- files[tolower(basename(files)) %in% basenames_lower]
-  } else if (!is.null(pattern)) {
-    files <- files[grepl(pattern, basename(files), ignore.case = TRUE, perl = TRUE)]
-  }
-  files <- unique(normalizePath(files, mustWork = FALSE))
-  if (!length(files)) {
-    stop(
-      "ERROR: No ", label, " was found under /data. ",
-      "Upload it explicitly or attach a data asset with the expected file name."
-    )
-  }
-  if (length(files) != 1L) {
-    stop(
-      "ERROR: Multiple ", label, " candidates were found. Upload the intended file explicitly: ",
-      paste(files, collapse = ", ")
-    )
-  }
-  files[[1L]]
-}
-
 resolve_upload <- function(value, label) {
   if (!is.null(value) && nzchar(value)) {
     if (!file.exists(value)) {
@@ -139,15 +109,15 @@ if (is.null(expression_path)) {
     deg_path
   } else {
     find_unique_data_file(
-      "DEG/expression table",
-      basenames = c("DEG_Analysis.csv", "DEG_Analysis.tsv", "DEG_Analysis.txt", "DEG_Analysis.rds")
+      label = "DEG/expression table",
+      pattern = "DEG"
     )
   }
 }
 if (is.null(metadata_path)) {
   metadata_path <- find_unique_data_file(
-    "sample metadata table",
-    basenames = c("Sample_Metadata.csv", "Sample_Metadata.tsv", "Sample_Metadata.txt", "Sample_Metadata.rds")
+    label = "sample metadata table",
+    pattern = "metadata"
   )
 }
 if (identical(opt$statistics_mode, "precomputed_deg") && is.null(deg_path)) {
@@ -160,17 +130,28 @@ if (!is.null(deg_path)) message("DEG table: ", deg_path)
 
 result_dir <- if (dir.exists("/results")) "/results" else file.path(runtime_root, "results")
 dir.create(result_dir, recursive = TRUE, showWarnings = FALSE)
+expression_table <- read_table_file(expression_path, "expression_table")
+metadata_table <- read_table_file(metadata_path, "metadata_table")
+deg_table <- if (!is.null(deg_path)) read_table_file(deg_path, "deg_table") else NULL
+expression_gene_column <- resolve_gene_column(
+  expression_table, opt$gene_column, "expression_table"
+)
+deg_gene_column <- if (!is.null(deg_table)) {
+  resolve_gene_column(deg_table, opt$deg_gene_column, "deg_table")
+} else {
+  opt$deg_gene_column
+}
 result <- omix_gene_boxplots(
-  expression_table = read_table_file(expression_path, "expression_table"),
-  sample_metadata = read_table_file(metadata_path, "metadata_table"),
+  expression_table = expression_table,
+  sample_metadata = metadata_table,
   genes = omix_parse_csv_values(opt$genes),
-  gene_column = opt$gene_column,
+  gene_column = expression_gene_column,
   sample_column = opt$sample_column,
   category_column = opt$category_column,
   categories = opt$categories,
   statistics_mode = opt$statistics_mode,
-  deg_results = if (!is.null(deg_path)) read_table_file(deg_path, "deg_table") else NULL,
-  deg_gene_column = opt$deg_gene_column,
+  deg_results = deg_table,
+  deg_gene_column = deg_gene_column,
   pvalue_type = opt$pvalue_type,
   statistical_method = opt$statistical_method,
   p_adjust_method = opt$p_adjust_method,
