@@ -1,9 +1,7 @@
-# Uses the published OMIX Visualization starter at the immutable commit tag
-# exported from the validated image build. No capsule-local R packages are
-# installed here; common visualization dependencies belong in the shared image.
-FROM ghcr.io/nidap-community/omix-r-visualization:fe132cd082ce9aaf64f925381a92402947de611d
+# hash:sha256:aaa756accec74b1d70d4ba86045492a6865cf7a2f1735654d9f7e0e44cb123f0
+ARG REGISTRY_HOST
+FROM $REGISTRY_HOST/codeocean/omix-r-visualization:fe132cd082ce9aaf64f925381a92402947de611d
 
-LABEL org.opencontainers.image.title="OMIX Gene Boxplots Code Ocean adapter"
-LABEL org.opencontainers.image.source="https://github.com/NIDAP-Community/OMIX-Gene-Boxplots"
-
-WORKDIR /code
+ARG DEBIAN_FRONTEND=noninteractive
+ARG GIT_ASKPASS
+COPY git-ask-pass /

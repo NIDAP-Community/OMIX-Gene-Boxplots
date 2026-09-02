@@ -1,4 +1,9 @@
 {
-  "version": 1,
-  "attached_datasets": []
+	"version": 1,
+	"attached_datasets": [
+		{
+			"id": "0d798da9-5060-480a-a8d6-b9f143af6638",
+			"mount": "gene-boxplots-demo"
+		}
+	]
 }
