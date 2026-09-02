@@ -14,25 +14,25 @@ environment selection, and `/results` output.
 
 ## Recommended workflow use
 
-For a result from **OMIX DEG Analysis**, use the exported
-`DEG_Analysis.csv` as both the expression table and the precomputed DEG table.
-It contains the normalized or batch-corrected sample-expression values together
-with columns like `B-A_pval` and `B-A_adjpval`.
+For a result from **OMIX DEG Analysis**, attach one result or data asset
+containing its two downstream files:
 
-The plotter also needs matching sample metadata, because group labels are not
-recoverable from an expression matrix alone. Attach a second Data Asset with
-exactly one file named `Sample_Metadata.csv`, or upload it through the App
-Panel. Its default required columns are `Sample` and `Group`.
+- `DEG_Analysis.csv`, used as both the expression table and the precomputed
+  DEG table; and
+- `Sample_Metadata.csv`, which supplies the matching sample-level group labels.
+
+The DEG table contains normalized or batch-corrected sample-expression values
+and columns like `B-A_pval` and `B-A_adjpval`; the metadata table has `Sample`
+and `Group` by default.
 
 When this capsule runs after an upstream DEG capsule in a Code Ocean Pipeline:
 
-1. Connect the DEG Results output. The adapter discovers exactly one supported
-   table with `DEG` in its filename below `/data`.
-2. Attach the matching metadata as a second Data Asset. The adapter discovers
-   exactly one supported table with `metadata` in its filename.
-3. Leave all three file-upload controls blank.
-4. Enter **Genes to Plot**, for example `Nfil3,Tox,Zbtb16`.
-5. Keep **Statistics Source** set to `precomputed_deg` unless an independent
+1. Connect one DEG Results output (or one Data Asset) containing both files.
+   The adapter discovers exactly one supported table with `DEG` in its filename
+   and exactly one with `metadata` in its filename below `/data`.
+2. Leave all three file-upload controls blank.
+3. Enter **Genes to Plot**, for example `Nfil3,Tox,Zbtb16`.
+4. Keep **Statistics Source** set to `precomputed_deg` unless an independent
    exploratory test is specifically desired.
 
 The capsule stops rather than guessing if it sees multiple candidate DEG or

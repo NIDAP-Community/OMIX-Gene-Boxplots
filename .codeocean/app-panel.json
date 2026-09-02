@@ -3,14 +3,14 @@
   "named_parameters": true,
   "general": {
     "title": "OMIX Gene Boxplots",
-    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor a DEG workflow result, connect or attach the result folder and separately attach matching sample metadata. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
+    "instructions": "Create sample-level gene-expression plots for selected genes.\n\nFor an OMIX DEG workflow result, connect or attach one result folder containing both `DEG_Analysis.csv` and `Sample_Metadata.csv`. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values."
   },
   "datasets": [
     {
       "id": "0d798da9-5060-480a-a8d6-b9f143af6638",
       "name": "Example DEG results",
       "description": "Example differential-expression results with sample-level expression values for gene boxplots.",
-      "help_text": "Example DEG results for the Gene Boxplots demo.\n\nIt should contain one supported table with `DEG` in its filename, a gene-ID column (commonly `GeneName` or `Gene`), sample-expression columns, and contrast statistics such as `B-A_pval` or `B-A_adjpval`.\n\nAttach matching sample metadata separately in one supported table with `metadata` in its filename, containing `Sample` and `Group`."
+      "help_text": "Example DEG results for the Gene Boxplots demo.\n\nFor a complete workflow input, one attached result or data asset must contain both a supported table with `DEG` in its filename and one with `metadata` in its filename. The DEG table needs a gene-ID column (commonly `GeneName` or `Gene`), sample-expression columns, and contrast statistics such as `B-A_pval` or `B-A_adjpval`. The metadata table needs `Sample` and `Group`."
     }
   ],
   "categories": [
