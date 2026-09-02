@@ -1,5 +1,4 @@
 {
-  "version": 1,
-  "cpu": 1,
-  "memory": "8Gi"
+	"version": 1,
+	"resource_class": "xsmall"
 }
