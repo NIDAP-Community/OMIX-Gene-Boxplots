@@ -1,6 +1,6 @@
-# hash:sha256:aaa756accec74b1d70d4ba86045492a6865cf7a2f1735654d9f7e0e44cb123f0
+# hash:sha256:2fdb4e067789cb15bbb2c7d7a625989f9bc456aa78b9931fff9ce001ce89a281
 ARG REGISTRY_HOST
-FROM $REGISTRY_HOST/codeocean/omix-r-visualization:fe132cd082ce9aaf64f925381a92402947de611d
+FROM $REGISTRY_HOST/codeocean/omix-r-visualization:r4.4.3-v2
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG GIT_ASKPASS

@@ -1,6 +1,6 @@
 {
 	"version": 1,
-	"base_image": "codeocean/omix-r-visualization:fe132cd082ce9aaf64f925381a92402947de611d",
+	"base_image": "codeocean/omix-r-visualization:r4.4.3-v2",
 	"options": {
 		"registry_host_arg": true,
 		"git_ask_pass": true,
