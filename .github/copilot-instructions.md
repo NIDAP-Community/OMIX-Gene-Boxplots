@@ -1,7 +1,8 @@
 # OMIX Gene Boxplots adapter instructions
 
 This repository is a Code Ocean deployment adapter. Read
-[`OMIX_MODULE_SOURCE.md`](../OMIX_MODULE_SOURCE.md) before modifying it.
+[AGENTS.md](../AGENTS.md) and
+[OMIX_MODULE_SOURCE.md](../OMIX_MODULE_SOURCE.md) before modifying it.
 
 - Keep portable scientific behavior in the canonical OMIX module first.
 - Keep Code Ocean-specific `/data` discovery, `/results` output, App Panel, and

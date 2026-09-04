@@ -4,13 +4,25 @@ Create one sample-level expression plot per selected gene, with optional
 annotations from the same differential-expression model that produced the
 results.
 
-## Related repository
+## Canonical OMIX module
 
-This repository is the **Code Ocean deployment adapter** for the canonical,
-platform-neutral [OMIX Gene Boxplots module](https://github.com/NIDAP-Community/OMIX/tree/main/modules/OMIX-Gene-Boxplots).
-The canonical OMIX module is the source of reusable scientific behavior. This
-repository provides Code Ocean input discovery, App Panel configuration,
-environment selection, and `/results` output.
+| Item | Location |
+| --- | --- |
+| Canonical module | [OMIX Gene Boxplots](https://github.com/NIDAP-Community/OMIX/tree/main/modules/OMIX-Gene-Boxplots) |
+| Interface contract | [schemas/interface.yml](https://github.com/NIDAP-Community/OMIX/blob/main/modules/OMIX-Gene-Boxplots/schemas/interface.yml) |
+| Development contract | [OMIX module contract](https://github.com/NIDAP-Community/OMIX/blob/main/docs/module-contract.md) |
+| Released source reference | [OMIX_MODULE_SOURCE.md](OMIX_MODULE_SOURCE.md) |
+
+The canonical module owns scientific behavior, portable CLI operation, tests,
+and the reusable input/output contract. This repository is its Code Ocean
+deployment adapter.
+
+## What this deployment adds
+
+- The Code Ocean App Panel and capsule entry point.
+- Explicit-upload priority and recursive workflow-result discovery under
+  `/data`.
+- Capsule outputs under `/results` and the pinned visualization runtime.
 
 ## Preserved CCBR implementation
 
@@ -97,9 +109,13 @@ Results contain:
 
 ## Environment
 
-This adapter is pinned to the immutable OMIX Visualization image tag
-`fe132cd082ce9aaf64f925381a92402947de611d`, rather than mutable `latest`.
-It includes R 4.4.3 and common plotting dependencies such as `ggplot2` and
-`optparse`. The next OMIX Visualization image release also includes the legacy
-boxplot dependencies `ggbeeswarm`, `broom`, `multcomp`, `multcompView`, and
-`RColorBrewer`; use that new immutable image tag once it has been built.
+This adapter uses the released `codeocean/omix-r-visualization:r4.4.3-v2`
+runtime recorded in `.codeocean/environment.json` and `environment/Dockerfile`.
+It includes R 4.4.3, `ggplot2`, `optparse`, and the legacy boxplot dependencies
+`ggbeeswarm`, `broom`, `multcomp`, `multcompView`, and `RColorBrewer`.
+
+## For developers
+
+Read [AGENTS.md](AGENTS.md) and [OMIX_MODULE_SOURCE.md](OMIX_MODULE_SOURCE.md)
+before editing. Reusable scientific changes belong in the canonical OMIX module
+and are exported here only after validation.
