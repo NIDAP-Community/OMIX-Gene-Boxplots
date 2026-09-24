@@ -9,25 +9,24 @@
 		{
 			"id": "88462af0-654d-4850-8efd-9e307485eeed",
 			"name": "OMIX DEG output (training data)",
-			"description": "Example differential-expression results with sample metadata output.",
-			"help_text": "This output from DEG Analysis has both DEG and sample metadata tables."
+			"description": "Example differential-expression results with sample metadata output.\n\nThis output from DEG Analysis has both DEG and sample metadata tables."
 		}
 	],
   "categories": [
     {
       "id": "input",
       "name": "📁 Input data",
-      "help_text": "Supply an expression/DEG result and matching sample metadata. File uploads override files discovered from connected data assets or workflow results."
+      "description": "Supply an expression/DEG result and matching sample metadata. File uploads override files discovered from connected data assets or workflow results."
     },
     {
       "id": "statistics",
       "name": "📊 Statistics",
-      "help_text": "Choose whether annotations use the original DEG model, a new exploratory test, or no statistics."
+      "description": "Choose whether annotations use the original DEG model, a new exploratory test, or no statistics."
     },
     {
       "id": "appearance",
       "name": "🎨 Appearance",
-      "help_text": "Control plot type, labels, colors, and image resolution."
+      "description": "Control plot type, labels, colors, and image resolution."
     }
   ],
   "parameters": [
@@ -36,7 +35,7 @@
       "category": "input",
       "name": "Expression Table (Optional)",
       "param_name": "expression_file",
-      "help_text": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
+      "description": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
       "type": "file",
       "value_type": "string"
     },
@@ -45,7 +44,7 @@
       "category": "input",
       "name": "Sample Metadata (Optional)",
       "param_name": "metadata_file",
-      "help_text": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
+      "description": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
       "type": "file",
       "value_type": "string"
     },
@@ -54,7 +53,7 @@
       "category": "input",
       "name": "DEG Results (Optional)",
       "param_name": "deg_file",
-      "help_text": "Optional separate DEG table with columns such as B-A_pval or B-A_adjpval. Leave blank when the expression table is `DEG_Analysis.csv`.",
+      "description": "Optional separate DEG table with columns such as B-A_pval or B-A_adjpval. Leave blank when the expression table is `DEG_Analysis.csv`.",
       "type": "file",
       "value_type": "string"
     },
@@ -63,7 +62,7 @@
       "category": "input",
       "name": "Genes to Plot",
       "param_name": "genes",
-      "help_text": "Required comma-separated identifiers exactly as they appear in the Gene ID Column (for example: Nfil3,Tox,Zbtb16).",
+      "description": "Required comma-separated identifiers exactly as they appear in the Gene ID Column (for example: Nfil3,Tox,Zbtb16).",
       "type": "text",
       "value_type": "string"
     },
@@ -72,7 +71,7 @@
       "category": "input",
       "name": "Gene ID Column",
       "param_name": "gene_column",
-      "help_text": "Identifier column in the expression table.",
+      "description": "Identifier column in the expression table.",
       "type": "text",
       "value_type": "string",
       "default_value": "GeneName"
@@ -82,7 +81,7 @@
       "category": "input",
       "name": "DEG Gene ID Column",
       "param_name": "deg_gene_column",
-      "help_text": "Identifier column in a separate DEG result table. Keep GeneName when using an OMIX DEG result.",
+      "description": "Identifier column in a separate DEG result table. Keep GeneName when using an OMIX DEG result.",
       "type": "text",
       "value_type": "string",
       "default_value": "GeneName"
@@ -92,7 +91,7 @@
       "category": "input",
       "name": "Sample ID Column",
       "param_name": "sample_column",
-      "help_text": "Metadata column whose values exactly match the expression sample-column names.",
+      "description": "Metadata column whose values exactly match the expression sample-column names.",
       "type": "text",
       "value_type": "string",
       "default_value": "Sample"
@@ -102,7 +101,7 @@
       "category": "input",
       "name": "Group Column",
       "param_name": "category_column",
-      "help_text": "Metadata column used for the x-axis groups.",
+      "description": "Metadata column used for the x-axis groups.",
       "type": "text",
       "value_type": "string",
       "default_value": "Group"
@@ -112,7 +111,7 @@
       "category": "input",
       "name": "Groups to Include (Optional)",
       "param_name": "categories",
-      "help_text": "Optional comma-separated values from Group Column. Leave blank to include every group.",
+      "description": "Optional comma-separated values from Group Column. Leave blank to include every group.",
       "type": "text",
       "value_type": "string"
     },
@@ -121,7 +120,7 @@
       "category": "statistics",
       "name": "Statistics Source",
       "param_name": "statistics_mode",
-      "help_text": "Precomputed DEG statistics preserves the original DEG model and is recommended. Within-plot tests run a new simple test on only the displayed values.",
+      "description": "Precomputed DEG statistics preserves the original DEG model and is recommended. Within-plot tests run a new simple test on only the displayed values.",
       "type": "list",
       "value_type": "string",
       "default_value": "precomputed_deg",
@@ -136,7 +135,7 @@
       "category": "statistics",
       "name": "P-value Type",
       "param_name": "pvalue_type",
-      "help_text": "Select nominal for *_pval or adjusted for *_adjpval when plotting precomputed DEG statistics.",
+      "description": "Select nominal for *_pval or adjusted for *_adjpval when plotting precomputed DEG statistics.",
       "type": "list",
       "value_type": "string",
       "default_value": "nominal",
@@ -150,7 +149,7 @@
       "category": "statistics",
       "name": "Within-plot Test",
       "param_name": "statistical_method",
-      "help_text": "Used only when Statistics Source is within_plot.",
+      "description": "Used only when Statistics Source is within_plot.",
       "type": "list",
       "value_type": "string",
       "default_value": "anova",
@@ -165,7 +164,7 @@
       "category": "statistics",
       "name": "Within-plot P-value Adjustment",
       "param_name": "p_adjust_method",
-      "help_text": "Method used to adjust multiple exploratory within-plot comparisons.",
+      "description": "Method used to adjust multiple exploratory within-plot comparisons.",
       "type": "text",
       "value_type": "string",
       "default_value": "BH"
@@ -175,7 +174,7 @@
       "category": "statistics",
       "name": "Minimum Samples per Group",
       "param_name": "minimum_samples_per_category",
-      "help_text": "Groups with fewer samples are excluded. The original default is three samples per group; at least two groups must remain.",
+      "description": "Groups with fewer samples are excluded. The original default is three samples per group; at least two groups must remain.",
       "type": "text",
       "value_type": "number",
       "default_value": "3"
@@ -198,7 +197,7 @@
       "category": "appearance",
       "name": "Plot Title",
       "param_name": "title",
-      "help_text": "Leave auto to use the original per-gene title. A custom value is used for every selected gene.",
+      "description": "Leave auto to use the original per-gene title. A custom value is used for every selected gene.",
       "type": "text",
       "value_type": "string",
       "default_value": "auto"
@@ -208,7 +207,7 @@
       "category": "appearance",
       "name": "Y-axis Label",
       "param_name": "y_axis_label",
-      "help_text": "Leave auto to preserve the original template behavior, or describe the supplied scale, such as batch-corrected expression or log2 CPM.",
+      "description": "Leave auto to preserve the original template behavior, or describe the supplied scale, such as batch-corrected expression or log2 CPM.",
       "type": "text",
       "value_type": "string",
       "default_value": "auto"
@@ -218,7 +217,7 @@
       "category": "appearance",
       "name": "Group Colors (Optional)",
       "param_name": "colors",
-      "help_text": "Leave blank to use the original default group colors in order: Deep Red, Vivid Blue, Green, Purple, and so on. Optionally supply comma-separated original color names in group order.",
+      "description": "Leave blank to use the original default group colors in order: Deep Red, Vivid Blue, Green, Purple, and so on. Optionally supply comma-separated original color names in group order.",
       "type": "text",
       "value_type": "string"
     },
