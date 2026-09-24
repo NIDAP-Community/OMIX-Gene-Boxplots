@@ -34,9 +34,11 @@ compact letters, beeswarm points, palette controls, and layout controls.
 
 `code/functions/OMIX_Gene_Boxplots.R` is only the thin workflow wrapper. It
 maps tables and `/results` paths into those preserved functions. The only
-intentional OMIX default change is that **nominal** p-values are selected by
-default for a precomputed DEG result; choose **adjusted** to use the original
-DEG-wrapper default.
+intentional OMIX defaults are that **nominal** p-values are selected for a
+precomputed DEG result and duplicate normalized-expression rows are averaged.
+Choose **adjusted** to use the original DEG-wrapper p-value default. Choose
+**sum** under **Advanced → Duplicate Gene Aggregation** only to reproduce the
+legacy duplicate-row behavior.
 
 ## Recommended workflow use
 
@@ -99,6 +101,13 @@ in group order.
 The expression table may contain normalized CPM, voom-scale expression, or
 batch-corrected values. It must contain a feature ID column (default
 `GeneName`) and sample columns that match the metadata `Sample` values.
+
+When multiple rows share a gene identifier, the adapter uses their sample-wise
+**mean** by default. This is appropriate for the supported normalized or
+log-space expression values, where summing duplicates would not preserve the
+scale. The advanced control also supports **sum** for legacy reproducibility
+and **keep** to retain every duplicate row. The selected behavior is recorded
+in `gene_boxplot_run_summary.csv`.
 
 Results contain:
 

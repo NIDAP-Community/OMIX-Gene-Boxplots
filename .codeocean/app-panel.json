@@ -27,6 +27,11 @@
       "id": "appearance",
       "name": "🎨 Appearance",
       "description": "Control plot type, labels, colors, and image resolution."
+    },
+    {
+      "id": "advanced",
+      "name": "⚙️ Advanced",
+      "description": "Optional compatibility controls. Keep the defaults unless reproducing a legacy analysis or intentionally retaining duplicate feature rows."
     }
   ],
   "parameters": [
@@ -178,6 +183,21 @@
       "type": "text",
       "value_type": "number",
       "default_value": "3"
+    },
+    {
+      "id": "duplicate_aggregation",
+      "category": "advanced",
+      "name": "Duplicate Gene Aggregation",
+      "param_name": "duplicate_aggregation",
+      "description": "How rows with the same gene identifier are handled before plotting normalized log-space expression. Mean is the recommended default; sum reproduces the legacy behavior; keep retains every row.",
+      "type": "list",
+      "value_type": "string",
+      "default_value": "mean",
+      "extra_data": [
+        "mean",
+        "sum",
+        "keep"
+      ]
     },
     {
       "id": "plot_type",
