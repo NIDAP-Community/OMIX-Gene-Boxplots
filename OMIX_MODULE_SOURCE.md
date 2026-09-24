@@ -4,10 +4,10 @@
 
 - **Module:** [OMIX Gene Boxplots](https://github.com/NIDAP-Community/OMIX/tree/main/modules/OMIX-Gene-Boxplots)
 - **Canonical path:** `modules/OMIX-Gene-Boxplots/`
-- **Canonical module version:** `0.2.0`
+- **Canonical module version:** `1.0.0`
 - **Canonical interface version:** `1`
 - **Canonical release tag:** Pending — baseline tag not yet established.
-- **Canonical source reference:** [`2987296a45a2a11e6c4b3454c813a63ae6db6ac0`](https://github.com/NIDAP-Community/OMIX/commit/2987296a45a2a11e6c4b3454c813a63ae6db6ac0)
+- **Canonical source reference:** [`7da6208330c72c8e1f123ba6e9de9f5c1f745dbb`](https://github.com/NIDAP-Community/OMIX/commit/7da6208330c72c8e1f123ba6e9de9f5c1f745dbb)
 - **Interface schema:** [schemas/interface.yml](https://github.com/NIDAP-Community/OMIX/blob/main/modules/OMIX-Gene-Boxplots/schemas/interface.yml)
 - **Module contract:** [OMIX module contract](https://github.com/NIDAP-Community/OMIX/blob/main/docs/module-contract.md)
 
@@ -21,11 +21,16 @@
 The listed exports were verified byte-for-byte against the canonical source
 reference above.
 
+Canonical `1.0.0` changes duplicate normalized-expression handling to a
+sample-wise mean by default. The adapter exposes the canonical
+`duplicate_aggregation` choices `mean`, `sum`, and `keep`; `sum` is retained
+for legacy reproduction and `keep` leaves duplicate rows uncombined.
+
 ## Adapter release record
 
 | Field | Recorded value |
 | --- | --- |
-| Adapter version | Pending — baseline tag not yet established. |
+| Adapter version | Pending — next release will align with canonical module `1.0.0` after platform validation. |
 | Adapter release tag | Pending. |
 | Platform release | Pending validation record. |
 | Runtime identity | Not yet recorded as an immutable image digest or lockfile reference. |
