@@ -19,15 +19,14 @@ get_script_dir <- function() {
 
 runtime_root <- normalizePath(file.path(get_script_dir(), ".."), mustWork = TRUE)
 source(file.path(runtime_root, "code", "functions", "OMIX_Gene_Boxplots.R"))
-source(file.path(runtime_root, "code", "functions", "workflow_input.R"))
+source(file.path(runtime_root, "code", "adapter_io.R"))
 
 option_list <- list(
-  make_option("--expression_file", type = "character", default = "", help = "Optional expression table upload"),
-  make_option("--metadata_file", type = "character", default = "", help = "Optional sample metadata upload"),
-  make_option("--deg_file", type = "character", default = "", help = "Optional DEG result upload"),
-  make_option("--genes", type = "character", default = "", help = "Required comma-separated gene identifiers"),
+  make_option("--expression_table", type = "character", default = NULL, help = "Optional expression table upload; attached input is discovered when omitted"),
+  make_option("--metadata_table", type = "character", default = NULL, help = "Optional sample metadata upload; attached input is discovered when omitted"),
+  make_option("--deg_table", type = "character", default = "", help = "Optional DEG result upload"),
+  make_option("--genes", type = "character", default = NULL, help = "Required comma-separated gene identifiers"),
   make_option("--gene_column", type = "character", default = "GeneName"),
-  make_option("--deg_gene_column", type = "character", default = "GeneName"),
   make_option("--sample_column", type = "character", default = "Sample"),
   make_option("--category_column", type = "character", default = "Group"),
   make_option("--categories", type = "character", default = ""),
@@ -68,35 +67,7 @@ while (index <= length(args)) {
 }
 opt <- parse_args(OptionParser(option_list = option_list), args = filtered_args)
 
-read_table_file <- function(path, label) {
-  if (is.null(path) || !nzchar(path) || !file.exists(path)) {
-    stop("ERROR: `", label, "` was not found: ", path)
-  }
-  extension <- tolower(tools::file_ext(path))
-  if (identical(extension, "rds")) {
-    object <- readRDS(path)
-    if (!is.data.frame(object)) {
-      stop("ERROR: `", label, "` RDS must contain a data frame")
-    }
-    return(object)
-  }
-  if (identical(extension, "csv")) {
-    return(utils::read.csv(path, stringsAsFactors = FALSE, check.names = FALSE))
-  }
-  utils::read.delim(path, stringsAsFactors = FALSE, check.names = FALSE)
-}
-
-resolve_upload <- function(value, label) {
-  if (!is.null(value) && nzchar(value)) {
-    if (!file.exists(value)) {
-      stop("ERROR: Uploaded ", label, " was not found: ", value)
-    }
-    return(normalizePath(value))
-  }
-  NULL
-}
-
-if (!nzchar(opt$genes)) {
+if (is.null(opt$genes) || !nzchar(opt$genes)) {
   stop("ERROR: `--genes` is required. Enter one or more comma-separated gene identifiers.")
 }
 if (!opt$statistics_mode %in% c("precomputed_deg", "within_plot", "none")) {
@@ -109,9 +80,9 @@ if (!opt$duplicate_aggregation %in% c("mean", "sum", "keep")) {
   stop("ERROR: `--duplicate_aggregation` must be mean, sum, or keep")
 }
 
-expression_path <- resolve_upload(opt$expression_file, "expression table")
-metadata_path <- resolve_upload(opt$metadata_file, "sample metadata")
-deg_path <- resolve_upload(opt$deg_file, "DEG results")
+expression_path <- resolve_upload(opt$expression_table, "expression table")
+metadata_path <- resolve_upload(opt$metadata_table, "sample metadata")
+deg_path <- resolve_upload(opt$deg_table, "DEG results")
 
 if (is.null(expression_path)) {
   expression_path <- if (!is.null(deg_path)) {
@@ -119,7 +90,7 @@ if (is.null(expression_path)) {
   } else {
     find_unique_data_file(
       label = "DEG/expression table",
-      pattern = "DEG_Analysis.csv"
+      pattern = "^DEG_Analysis\\.csv$"
     )
   }
 }
@@ -146,9 +117,12 @@ expression_gene_column <- resolve_gene_column(
   expression_table, opt$gene_column, "expression_table"
 )
 deg_gene_column <- if (!is.null(deg_table)) {
-  resolve_gene_column(deg_table, opt$deg_gene_column, "deg_table")
+  # The canonical interface deliberately uses one gene-column control for
+  # expression and DEG tables.  Keep the internal function binding derived
+  # from that public control instead of exposing a second App Panel field.
+  resolve_gene_column(deg_table, opt$gene_column, "deg_table")
 } else {
-  opt$deg_gene_column
+  opt$gene_column
 }
 result <- omix_gene_boxplots(
   expression_table = expression_table,
