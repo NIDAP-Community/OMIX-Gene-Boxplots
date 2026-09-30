@@ -3,7 +3,7 @@
   "named_parameters": true,
   "general": {
     "title": "OMIX Gene Boxplots",
-    "instructions": "Create sample-level gene-expression plots for selected genes using the preserved CCBR boxplot implementation.\n\nFor an OMIX DEG workflow result, connect or attach one result folder containing both `DEG_Analysis.csv` and `Sample_Metadata.csv`. Leave file upload fields blank: the capsule recursively discovers exactly one supported table with `DEG` in its filename and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values. The advanced original R functions remain available for local use."
+    "instructions": "Create sample-level gene-expression plots for selected genes using the preserved CCBR boxplot implementation.\n\nFor an OMIX DEG workflow result, connect or attach one result folder containing both `DEG_Analysis.csv` and `Sample_Metadata.csv`. Leave file upload fields blank: the capsule recursively discovers exactly one file named `DEG_Analysis.csv` and exactly one supported table with `metadata` in its filename below `/data`. Alternatively upload the tables directly.\n\nUse **Precomputed DEG statistics** (recommended) to annotate the plot with the original limma/voom statistics. Use **Within-plot tests** only for an exploratory independent comparison of the plotted values. The advanced original R functions remain available for local use."
   },
 	"datasets": [
 		{
@@ -36,28 +36,28 @@
   ],
   "parameters": [
     {
-      "id": "expression_file",
+      "id": "expression_table",
       "category": "input",
       "name": "Expression Table (Optional)",
-      "param_name": "expression_file",
-      "description": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one supported file whose name contains DEG is discovered from the connected result or data asset.",
+      "param_name": "expression_table",
+      "description": "Upload normalized, voom-scale, or batch-corrected expression values. If blank, exactly one file named DEG_Analysis.csv is discovered from the connected result or data asset.",
       "type": "file",
       "value_type": "string"
     },
     {
-      "id": "metadata_file",
+      "id": "metadata_table",
       "category": "input",
       "name": "Sample Metadata (Optional)",
-      "param_name": "metadata_file",
+      "param_name": "metadata_table",
       "description": "Upload a metadata table containing Sample and Group columns. If blank, exactly one supported file whose name contains metadata is discovered under /data.",
       "type": "file",
       "value_type": "string"
     },
     {
-      "id": "deg_file",
+      "id": "deg_table",
       "category": "input",
       "name": "DEG Results (Optional)",
-      "param_name": "deg_file",
+      "param_name": "deg_table",
       "description": "Optional separate DEG table with columns such as B-A_pval or B-A_adjpval. Leave blank when the expression table is `DEG_Analysis.csv`.",
       "type": "file",
       "value_type": "string"
@@ -77,16 +77,6 @@
       "name": "Gene ID Column",
       "param_name": "gene_column",
       "description": "Identifier column in the expression table.",
-      "type": "text",
-      "value_type": "string",
-      "default_value": "GeneName"
-    },
-    {
-      "id": "deg_gene_column",
-      "category": "input",
-      "name": "DEG Gene ID Column",
-      "param_name": "deg_gene_column",
-      "description": "Identifier column in a separate DEG result table. Keep GeneName when using an OMIX DEG result.",
       "type": "text",
       "value_type": "string",
       "default_value": "GeneName"
@@ -170,19 +160,19 @@
       "name": "Within-plot P-value Adjustment",
       "param_name": "p_adjust_method",
       "description": "Method used to adjust multiple exploratory within-plot comparisons.",
-      "type": "text",
+      "type": "list",
       "value_type": "string",
-      "default_value": "BH"
-    },
-    {
-      "id": "minimum_samples_per_category",
-      "category": "statistics",
-      "name": "Minimum Samples per Group",
-      "param_name": "minimum_samples_per_category",
-      "description": "Groups with fewer samples are excluded. The original default is three samples per group; at least two groups must remain.",
-      "type": "text",
-      "value_type": "number",
-      "default_value": "3"
+      "default_value": "BH",
+      "extra_data": [
+        "BH",
+        "none",
+        "bonferroni",
+        "holm",
+        "fdr",
+        "hochberg",
+        "hommel",
+        "BY"
+      ]
     },
     {
       "id": "duplicate_aggregation",
@@ -198,6 +188,16 @@
         "sum",
         "keep"
       ]
+    },
+    {
+      "id": "minimum_samples_per_category",
+      "category": "statistics",
+      "name": "Minimum Samples per Group",
+      "param_name": "minimum_samples_per_category",
+      "description": "Groups with fewer samples are excluded. The original default is three samples per group; at least two groups must remain.",
+      "type": "text",
+      "value_type": "number",
+      "default_value": "3"
     },
     {
       "id": "plot_type",
@@ -248,7 +248,7 @@
       "param_name": "image_width",
       "type": "text",
       "value_type": "number",
-      "default_value": "5"
+      "default_value": "6"
     },
     {
       "id": "image_height",
@@ -257,7 +257,7 @@
       "param_name": "image_height",
       "type": "text",
       "value_type": "number",
-      "default_value": "5.5"
+      "default_value": "5"
     },
     {
       "id": "image_dpi",

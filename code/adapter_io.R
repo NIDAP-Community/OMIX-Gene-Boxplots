@@ -1,5 +1,33 @@
 # Code Ocean-specific input discovery for OMIX Gene Boxplots.
 
+read_table_file <- function(path, label) {
+  if (is.null(path) || !nzchar(path) || !file.exists(path)) {
+    stop("ERROR: `", label, "` was not found: ", path)
+  }
+  extension <- tolower(tools::file_ext(path))
+  if (identical(extension, "rds")) {
+    object <- readRDS(path)
+    if (!is.data.frame(object)) {
+      stop("ERROR: `", label, "` RDS must contain a data frame")
+    }
+    return(object)
+  }
+  if (identical(extension, "csv")) {
+    return(utils::read.csv(path, stringsAsFactors = FALSE, check.names = FALSE))
+  }
+  utils::read.delim(path, stringsAsFactors = FALSE, check.names = FALSE)
+}
+
+resolve_upload <- function(value, label) {
+  if (!is.null(value) && nzchar(value)) {
+    if (!file.exists(value)) {
+      stop("ERROR: Uploaded ", label, " was not found: ", value)
+    }
+    return(normalizePath(value))
+  }
+  NULL
+}
+
 find_unique_data_file <- function(data_root = "/data", label, pattern) {
   if (!dir.exists(data_root)) {
     stop("ERROR: `", data_root, "` is unavailable; upload the required file explicitly")

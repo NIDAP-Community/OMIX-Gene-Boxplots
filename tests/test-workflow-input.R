@@ -4,7 +4,7 @@ script_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(script_arg) != 1L) stop("Run this check with Rscript tests/test-workflow-input.R")
 repo_root <- normalizePath(file.path(dirname(sub("^--file=", "", script_arg)), ".."))
 source(file.path(repo_root, "code", "functions", "OMIX_Gene_Boxplots.R"))
-source(file.path(repo_root, "code", "functions", "workflow_input.R"))
+source(file.path(repo_root, "code", "adapter_io.R"))
 
 stopifnot(file.exists(file.path(repo_root, "code", "functions", "Boxplot_with_Stats.R")))
 stopifnot(exists("gene_boxplot_with_deg_results", mode = "function"))
@@ -36,6 +36,42 @@ metadata_path <- find_unique_data_file(data_root, "sample metadata table", "meta
 stopifnot(identical(basename(deg_path), "DEG-Results.csv"))
 stopifnot(identical(basename(metadata_path), "Sample Metadata - Demo.csv"))
 stopifnot(identical(resolve_gene_column(expression, "GeneName", "expression_table"), "Gene"))
+stopifnot(identical(read_table_file(deg_path, "expression table"), expression))
+
+# The workflow binding targets the stable DEG table basename rather than every
+# artifact containing "DEG" (for example, a run summary).
+canonical_result_dir <- file.path(fixture, "canonical-result")
+dir.create(canonical_result_dir)
+write.csv(expression, file.path(canonical_result_dir, "DEG_Analysis.csv"), row.names = FALSE)
+write.csv(expression, file.path(canonical_result_dir, "DEG_Analysis_run_summary.csv"), row.names = FALSE)
+stopifnot(identical(
+  basename(find_unique_data_file(
+    canonical_result_dir,
+    "DEG/expression table",
+    "^DEG_Analysis\\.csv$"
+  )),
+  "DEG_Analysis.csv"
+))
+
+format_dir <- file.path(fixture, "formats")
+dir.create(format_dir)
+tsv_path <- file.path(format_dir, "expression.tsv")
+rds_path <- file.path(format_dir, "expression.rds")
+write.table(expression, tsv_path, sep = "\t", quote = FALSE, row.names = FALSE)
+saveRDS(expression, rds_path)
+stopifnot(
+  identical(read_table_file(tsv_path, "expression table"), expression),
+  identical(read_table_file(rds_path, "expression table"), expression)
+)
+
+# Explicit uploads always win over attached-data discovery. This keeps the
+# three canonical file bindings deterministic even when /data has other files.
+explicit_expression <- file.path(fixture, "explicit-expression.csv")
+write.csv(expression, explicit_expression, row.names = FALSE)
+stopifnot(identical(
+  resolve_upload(explicit_expression, "expression table"),
+  normalizePath(explicit_expression)
+))
 
 result <- omix_gene_boxplots(
   expression_table = utils::read.csv(deg_path, check.names = FALSE),
@@ -55,5 +91,14 @@ error <- tryCatch({
 }, error = identity)
 stopifnot(inherits(error, "error"))
 stopifnot(grepl("Multiple DEG/expression table candidates", conditionMessage(error), fixed = TRUE))
+
+missing_error <- tryCatch({
+  find_unique_data_file(file.path(fixture, "missing"), "DEG/expression table", "DEG")
+  NULL
+}, error = identity)
+stopifnot(
+  inherits(missing_error, "error"),
+  grepl("is unavailable", conditionMessage(missing_error), fixed = TRUE)
+)
 
 message("OMIX Gene Boxplots workflow-input and legacy checks passed")

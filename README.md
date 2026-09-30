@@ -22,7 +22,8 @@ deployment adapter.
 - The Code Ocean App Panel and capsule entry point.
 - Explicit-upload priority and recursive workflow-result discovery under
   `/data`.
-- Capsule outputs under `/results` and the pinned visualization runtime.
+- Platform-owned capsule outputs under `/results` and the tagged visualization
+  runtime. Its immutable digest remains pending platform validation.
 
 ## Preserved CCBR implementation
 
@@ -56,8 +57,8 @@ and `Group` by default.
 When this capsule runs after an upstream DEG capsule in a Code Ocean Pipeline:
 
 1. Connect one DEG Results output (or one Data Asset) containing both files.
-   The adapter discovers exactly one supported table with `DEG` in its filename
-   and exactly one with `metadata` in its filename below `/data`.
+   The adapter discovers exactly one `DEG_Analysis.csv` and exactly one
+   supported table with `metadata` in its filename below `/data`.
 2. Leave all three file-upload controls blank.
 3. Enter **Genes to Plot**, for example `Nfil3,Tox,Zbtb16`.
 4. Keep **Statistics Source** set to `precomputed_deg` unless an independent
@@ -69,6 +70,11 @@ input set. Its default feature ID is `GeneName`, but a common `Gene` column is
 detected automatically when that default is absent.
 
 The original default requires at least three samples in each displayed group.
+
+The file selectors use the canonical binding names `expression_table`,
+`metadata_table`, and `deg_table`. The separate scientific implementation
+argument `deg_gene_column` is derived from **Gene ID Column** and is not a
+public App Panel control.
 
 ## Statistics modes
 
@@ -116,12 +122,20 @@ Results contain:
 - `gene_boxplot_expression_long.csv` — the actual displayed sample values; and
 - `gene_boxplot_run_summary.csv` — run settings and data scope.
 
+Code Ocean owns the canonical `output_dir` binding: every capsule run writes
+these files beneath `/results`, so no result-path field is shown in the App
+Panel. When `code/main.R` is exercised outside Code Ocean, it uses the local
+repository `results/` directory only if `/results` is unavailable.
+
 ## Environment
 
 This adapter uses the released `codeocean/omix-r-visualization:r4.4.3-v2`
 runtime recorded in `.codeocean/environment.json` and `environment/Dockerfile`.
 It includes R 4.4.3, `ggplot2`, `optparse`, and the legacy boxplot dependencies
 `ggbeeswarm`, `broom`, `multcomp`, `multcompView`, and `RColorBrewer`.
+The tag is recorded, but no immutable runtime digest has yet been validated;
+see [CODE_OCEAN_VALIDATION.md](CODE_OCEAN_VALIDATION.md) for the required
+platform evidence before release.
 
 ## For developers
 
