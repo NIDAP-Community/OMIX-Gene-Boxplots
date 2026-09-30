@@ -90,6 +90,21 @@ stopifnot(isTRUE(all.equal(
   check.attributes = FALSE
 )))
 
+adjusted_result <- omix_gene_boxplots(
+  expression_table = expression,
+  sample_metadata = metadata,
+  genes = "GeneA",
+  statistics_mode = "precomputed_deg",
+  deg_results = expression,
+  pvalue_type = "adjusted",
+  output_dir = NULL
+)
+stopifnot(isTRUE(all.equal(
+  adjusted_result$statistics$p_adj,
+  c(0.040, 0.003, 0.050),
+  check.attributes = FALSE
+)))
+
 # Render-level regression: an explicit 6x5-inch, 72-DPI export must be
 # 432x360 pixels and retain visible pixels from each original group color and
 # the black comparison annotations. This catches layer/theme changes that a
